@@ -1,0 +1,17 @@
+
+In implementarea temei , am respectat implementarea ceruta.
+
+Etapa de mapare se face in clasa Mapping.java , aici se deschid fisierele si se prelucreaza pe siruri de byte. Este implementata logica ceruta in enunt ,
+daca segmentul incepe cu la mijlocul unui cuvant , acesta este ignorat , iar daca segmentul se termina cu un cuvant inceput , luam in segmentul curent pana la terminarea cuvantului din segmentul urmator.
+Am folosit drept clasa auxiliara Worker, unde am stocat toate informatiile de care aveam nevoie.
+
+In implementarea reduce , se realizeaza in Reducing.java , aici este nevoie de hashmap'urile construite anterior , iar aceste date trebuiesc introduse intr-un concurrentHashMap corespondent fiecarui fisier.
+In continuare este setata o bariera pentru a ne asigura ca toti workerii sunt prelucrati si exista solutiile finale in aceste ConcurrentHashMap'uri. Dupa aceea se impart numarul de fisiere la numarul de threaduri
+ si sunt impartite fisierele la threaduri pentru a calcula rangul acestora. In final se face o sortare dupa rang si se scrie in fisier rezultatul.
+
+Grupa : 334CC
+Mistodinis Robert Alexandru
+	
+	
+	
+	 

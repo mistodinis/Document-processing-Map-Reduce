@@ -1,0 +1,20 @@
+In implementarea temei , am respectat partial implementarea ceruta. Etapa de combinare am implementat-o in Map. Etapa de procesare este intr-o clasa diferita ReduceTema.class . 
+
+
+Logica de la care am plecat:
+	Impartirea fisierului in stringuri de dimensiunea ceruta , adaugarea acestora intr-o lista si prelucrarea pentru a completa cuvantul in cadrul primului string si updatarea celui de-al 2-lea string.
+	Map + Combinare
+	Paralelizare pe lista de stringuri , fiecare worker lua o parte , iar in acest caz se facea split pe aceste stringuri si se adaugau intr-un ConcurrentHashMap aferent fiecarui fisier.
+	Reduce (Procesare)
+	Paralelizare pe lista de fisiere , in acest caz se calcula rank'ul pentru fiecare fisier in parte , si se determina cheia cu valoarea cea mai mare.
+	
+Grupa : 334CC
+Mistodinis Robert Alexandru
+
+
+
+In implementarea temei , am respectat implementarea ceruta. Etapa de mapare se face in clasa Mapping.java ,
+	
+	
+	
+	 
