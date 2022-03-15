@@ -7,7 +7,7 @@ public class Worker {
     private String fileName;
     private int offSet;
     private int segmentSize;
-    private HashMap<Integer,Integer> appearence = new HashMap<>();
+    private HashMap<Integer, Integer> appearence = new HashMap<>();
     private int maxLength = 0;
     String dateString;
 

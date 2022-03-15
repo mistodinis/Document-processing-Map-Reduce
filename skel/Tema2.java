@@ -33,7 +33,7 @@ public class Tema2 {
             int numberOfFiles = Integer.parseInt(scanner.nextLine());
             List<String> files = new ArrayList<>();
             List<String> workers = new ArrayList<>();
-            List<Worker> workerList =Collections.synchronizedList(new ArrayList<>());
+            List<Worker> workerList = Collections.synchronizedList(new ArrayList<>());
             List<FileTema> fileTemaList = Collections.synchronizedList(new ArrayList<>());
 
             FileWriter myWriter = new FileWriter(args[2]);
@@ -48,25 +48,20 @@ public class Tema2 {
                 long numberOfBytesInFile = Files.size(path);
                 fileTemaList.add(new FileTema(file));
 
-//                System.out.println(numberOfBytesInFile);
-
-                for(long offSet = 0;offSet < numberOfBytesInFile;offSet+= segmentSize){
-                    if(offSet + segmentSize >= numberOfBytesInFile){
-                        workerList.add(new Worker(file,(int)offSet, (int) (numberOfBytesInFile-offSet)));
+                for (long offSet = 0; offSet < numberOfBytesInFile; offSet += segmentSize) {
+                    if (offSet + segmentSize >= numberOfBytesInFile) {
+                        workerList.add(new Worker(file, (int) offSet, (int) (numberOfBytesInFile - offSet)));
                         break;
                     }
 
-                    workerList.add(new Worker(file, (int) offSet,segmentSize));
+                    workerList.add(new Worker(file, (int) offSet, segmentSize));
                 }
-
-
-
             }
 
             scanner.close();
 
             for (int i = 0; i < numberOfThreads; i++) {
-                threads[i] = new Thread(new Mapping(i, numberOfThreads,  workerList));
+                threads[i] = new Thread(new Mapping(i, numberOfThreads, workerList));
             }
 
             for (int i = 0; i < numberOfThreads; i++) {
@@ -84,7 +79,7 @@ public class Tema2 {
             double[] rang = new double[fileTemaList.size()];
 
             for (int j = 0; j < numberOfThreads; j++) {
-                threads[j] = new Thread(new Reducing(j, numberOfThreads,  fileTemaList,  workerList,rang));
+                threads[j] = new Thread(new Reducing(j, numberOfThreads, fileTemaList, workerList, rang));
             }
 
             for (int j = 0; j < numberOfThreads; j++) {
@@ -102,16 +97,11 @@ public class Tema2 {
             fileTemaList.sort(new FileComparator());
 
             for (FileTema fileTema : fileTemaList) {
-                String [] findName = fileTema.getFileName().split("/");
-
-
-
-//                System.out.println(fileTema.getFileName() + " ->" + String.format("%.2f", fileTema.getRank()) + " , " + fileTema.getMaxLength() + " , " + fileTema.getHashMap().get(fileTema.getMaxLength().get()));
+                String[] findName = fileTema.getFileName().split("/");
                 myWriter.write(findName[findName.length - 1] + "," + String.format("%.2f", fileTema.getRank()) + ',' + fileTema.getMaxLength() + ',' + fileTema.getHashMap().get(fileTema.getMaxLength().get()) + "\n");
             }
             myWriter.close();
 
-//            System.out.println("checkOut");
         } catch (FileNotFoundException e) {
             System.out.println("Scanner initiation failed!");
             e.printStackTrace();

@@ -9,7 +9,7 @@ public class Reducing implements Runnable {
     private List<Worker> workerList;
     private double[] rang;
 
-    public Reducing(int id, int numberOfThreads, List<FileTema> fileTemaList,  List<Worker> workerList, double[] rang) {
+    public Reducing(int id, int numberOfThreads, List<FileTema> fileTemaList, List<Worker> workerList, double[] rang) {
         this.id = id;
         this.numberOfThreads = numberOfThreads;
         this.fileTemaList = fileTemaList;
@@ -38,20 +38,19 @@ public class Reducing implements Runnable {
             result[i] = result[i - 1] + result[i - 2];
 
         }
-
-        return result[rank ];
+        return result[rank];
     }
 
     @Override
     public void run() {
 
-        int start = (int)(id * (double) workerList.size() / numberOfThreads);
-        int end = Math.min((int)((id + 1) * (double) workerList.size() / numberOfThreads), workerList.size());
+        int start = (int) (id * (double) workerList.size() / numberOfThreads);
+        int end = Math.min((int) ((id + 1) * (double) workerList.size() / numberOfThreads), workerList.size());
 
         HashMap<String, FileTema> hashOfFiles = new HashMap<>();
 
-        for(FileTema fileTema : fileTemaList){
-            hashOfFiles.put(fileTema.getFileName() , fileTema);
+        for (FileTema fileTema : fileTemaList) {
+            hashOfFiles.put(fileTema.getFileName(), fileTema);
         }
 
 
@@ -63,19 +62,19 @@ public class Reducing implements Runnable {
 
             int maximumLength = fileTema.getMaxLength().intValue();
 
-            for(Map.Entry<Integer,Integer> entrySet : worker.getAppearence().entrySet()){
+            for (Map.Entry<Integer, Integer> entrySet : worker.getAppearence().entrySet()) {
                 fileTema.getTotalWords().addAndGet(entrySet.getValue());
 
-                if(maximumLength < entrySet.getKey()){
+                if (maximumLength < entrySet.getKey()) {
                     maximumLength = entrySet.getKey();
-                    if( fileTema.getMaxLength().get() < maximumLength){
+                    if (fileTema.getMaxLength().get() < maximumLength) {
                         fileTema.getMaxLength().set(maximumLength);
                     }
                 }
-                if(fileTema.getHashMap().containsKey(entrySet.getKey())){
-                    fileTema.getHashMap().put(entrySet.getKey() , fileTema.getHashMap().get(entrySet.getKey()) + entrySet.getValue());
-                }else{
-                    fileTema.getHashMap().put(entrySet.getKey() , entrySet.getValue());
+                if (fileTema.getHashMap().containsKey(entrySet.getKey())) {
+                    fileTema.getHashMap().put(entrySet.getKey(), fileTema.getHashMap().get(entrySet.getKey()) + entrySet.getValue());
+                } else {
+                    fileTema.getHashMap().put(entrySet.getKey(), entrySet.getValue());
                 }
             }
         }
@@ -83,8 +82,8 @@ public class Reducing implements Runnable {
         try {
             Tema2.barrier.await();
 
-             start = (int)(id * (double) fileTemaList.size() / numberOfThreads);
-             end = Math.min((int)((id + 1) * (double) fileTemaList.size() / numberOfThreads), workerList.size());
+            start = (int) (id * (double) fileTemaList.size() / numberOfThreads);
+            end = Math.min((int) ((id + 1) * (double) fileTemaList.size() / numberOfThreads), workerList.size());
 
             for (int i = start; i < end; i++) {
                 FileTema fileTema = fileTemaList.get(i);
@@ -96,13 +95,9 @@ public class Reducing implements Runnable {
 
                     rang[i] += fibonacci(mapEntry.getKey() + 1) * numberOfAppearence;
                 }
-
                 rang[i] /= fileTema.getTotalWords().get();
                 fileTemaList.get(i).setRank(rang[i]);
-
             }
-
-
         } catch (InterruptedException | BrokenBarrierException e) {
             e.printStackTrace();
         }

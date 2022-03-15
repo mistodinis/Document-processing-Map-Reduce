@@ -1,10 +1,10 @@
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class FileTema  {
+public class FileTema {
 
     private String fileName;
-    private ConcurrentHashMap<Integer,Integer> hashMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Integer, Integer> hashMap = new ConcurrentHashMap<>();
     private AtomicInteger maxLength = new AtomicInteger(0);
     private AtomicInteger totalWords = new AtomicInteger(0);
     private double rank;
@@ -13,7 +13,7 @@ public class FileTema  {
         this.fileName = fileName;
     }
 
-    public FileTema(FileTema fileTema){
+    public FileTema(FileTema fileTema) {
         this.fileName = fileTema.getFileName();
         this.hashMap = fileTema.getHashMap();
         this.maxLength = fileTema.getMaxLength();
